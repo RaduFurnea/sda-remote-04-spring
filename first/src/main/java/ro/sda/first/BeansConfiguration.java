@@ -39,19 +39,16 @@ public class BeansConfiguration {
     }
 
     @Bean
-    @Qualifier("multiLinguistPerson")
     public Person multiLinguist(@Qualifier("englishSpeaker") final Speaker englishSpeaker, @Qualifier("frenchSpeaker") final Speaker frenchSpeaker) {
         return new Person(englishSpeaker, frenchSpeaker);
     }
 
     @Bean
-    @Qualifier("frenchPerson")
     public Person frenchPerson(@Qualifier("frenchSpeaker") final Speaker frenchSpeaker) {
         return new Person(frenchSpeaker);
     }
 
     @Bean
-    @Qualifier("frenchPerson")
     public Person englishPerson(@Qualifier("englishSpeaker") final Speaker englishSpeaker) {
         return new Person(englishSpeaker);
     }
