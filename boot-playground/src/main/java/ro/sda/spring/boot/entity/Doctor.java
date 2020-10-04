@@ -98,6 +98,19 @@ public class Doctor {
     }
 
     @Override
+    public String toString() {
+        return "Doctor{" +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", street='" + street + '\'' +
+                ", streetNr=" + streetNr +
+                ", postCode='" + postCode + '\'' +
+                ", email='" + email + '\'' +
+                '}';
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
