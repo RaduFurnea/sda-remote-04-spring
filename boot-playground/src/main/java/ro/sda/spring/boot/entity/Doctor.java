@@ -4,12 +4,7 @@ import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
-public class Doctor {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(nullable = false, unique = true)
-    private Long id;
+public class Doctor extends BaseEntity {
 
     @Column(nullable = false, length = 32)
     private String firstName;
@@ -39,14 +34,6 @@ public class Doctor {
     }
 
     public Doctor() {
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getFirstName() {

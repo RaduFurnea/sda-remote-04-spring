@@ -3,13 +3,12 @@ package ro.sda.spring.boot.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import ro.sda.spring.boot.entity.Doctor;
+import ro.sda.spring.boot.exception.NotFoundExeption;
 import ro.sda.spring.boot.repository.DoctorRepository;
 
 import javax.annotation.PostConstruct;
-import javax.print.Doc;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -25,35 +24,8 @@ public class DoctorService {
         this.doctorRepository = doctorRepository;
     }
 
-    @PostConstruct
-    public void init() {
-        this.createDefaultDoctors();
-        this.getDoctor(2l);
-        this.countDoctors();
-        this.findAllDoctorsPageable(0, 2);
-        System.out.println("------------- next page --------------");
-        this.findAllDoctorsPageable(1, 2);
-        System.out.println("------------- next page --------------");
-        this.findAllDoctorsPageable(2, 2);
-        this.findByFirstName("Adrian");
-        this.findByFirstNameOrLastName("Bogdan", "Juncu");
-        this.findByStreetNumberGreaterThan(1l);
-        System.out.println(this.doctorRepository.countDoctorsByFirstName("Adrian"));
-        System.out.println(this.doctorRepository.countDoctorsByLastName("Gabor"));
-    }
-
-    private void createDefaultDoctors() {
-        List<Doctor> doctors = new ArrayList<>();
-        doctors.add(new Doctor("Adrian", "Bobocel", "Str. Carpenului", 12l, "500412", "a.bobocel@gmail.com"));
-        doctors.add(new Doctor("Adrian", "Rotila", "Str. Socului", 45l, "500435", "a.rotila@gmail.com"));
-        doctors.add(new Doctor("Bogdan", "Gabor", "Str. Nucului", 5l, "500987", "bogdan.gabor@yahoo.com"));
-        doctors.add(new Doctor("Constantin", "Juncu", "Str. Ciresului", 59l, "500654", "c.juncu@yahoo.com"));
-        doctors.add(new Doctor("George", "Niculae", "Str. Calea Bucuresti", 255l, "500487", "g.nc12@gmail.com"));
-        doctorRepository.saveAll(doctors);
-    }
-
     public List<Doctor> findByStreetNumberGreaterThan(Long id) {
-        Doctor doctor = this.getDoctor(id);
+        Doctor doctor = this.findDoctorById(id);
         List<Doctor> doctors = doctorRepository.findByStreetNrGreaterThan(doctor.getStreetNr());
         doctors.forEach(d -> System.out.println(d.toString()));
         return doctors;
@@ -71,7 +43,7 @@ public class DoctorService {
         return doctors;
     }
 
-    private List<Doctor> findAllDoctorsPageable(int page, int size) {
+    public List<Doctor> findAllDoctorsPageable(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
         List<Doctor> doctors = doctorRepository.findAll(pageable).get().collect(Collectors.toList());
         doctors.forEach(doctor ->
@@ -80,12 +52,12 @@ public class DoctorService {
         return doctors;
     }
 
-    private Long countDoctors() {
+    public Long countDoctors() {
         System.out.println("There are " + doctorRepository.count() + " doctors.");
         return doctorRepository.count();
     }
 
-    private Doctor getDoctor(Long id) {
+    public Doctor findDoctorById(Long id) {
         Optional<Doctor> optDoctor = doctorRepository.findById(id);
         if (optDoctor.isPresent()) {
             Doctor doctor = optDoctor.get();
@@ -93,8 +65,31 @@ public class DoctorService {
             return doctor;
         } else {
             System.out.println("Doctor with ID " + id + " does not exist.");
-            throw new RuntimeException();
+            throw new NotFoundExeption("Doctor with ID " + id + " does not exist.");
         }
     }
 
+    public Doctor saveDoctor(Doctor doctor) {
+        return doctorRepository.save(doctor);
+    }
+
+    public void deleteDoctorById(Long id) {
+        this.findDoctorById(id);
+        doctorRepository.deleteById(id);
+    }
+
+    @PostConstruct
+    public void init() {
+        this.createDefaultDoctors();
+    }
+
+    private void createDefaultDoctors() {
+        List<Doctor> doctors = new ArrayList<>();
+        doctors.add(new Doctor("Adrian", "Bobocel", "Str. Carpenului", 12l, "500412", "a.bobocel@gmail.com"));
+        doctors.add(new Doctor("Adrian", "Rotila", "Str. Socului", 45l, "500435", "a.rotila@gmail.com"));
+        doctors.add(new Doctor("Bogdan", "Gabor", "Str. Nucului", 5l, "500987", "bogdan.gabor@yahoo.com"));
+        doctors.add(new Doctor("Constantin", "Juncu", "Str. Ciresului", 59l, "500654", "c.juncu@yahoo.com"));
+        doctors.add(new Doctor("George", "Niculae", "Str. Calea Bucuresti", 255l, "500487", "g.nc12@gmail.com"));
+        doctorRepository.saveAll(doctors);
+    }
 }
