@@ -1,6 +1,8 @@
 package ro.sda.spring.boot.entity;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -23,6 +25,9 @@ public class Doctor extends BaseEntity {
 
     @Column(nullable = true, length = 64)
     private String email;
+
+    @OneToMany(mappedBy = "doctor", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private List<Patient> patients = new ArrayList();
 
     public Doctor(String firstName, String lastName, String street, Long streetNr, String postCode, String email) {
         this.firstName = firstName;
@@ -82,6 +87,18 @@ public class Doctor extends BaseEntity {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public List<Patient> getPatients() {
+        return patients;
+    }
+
+    public void setPatients(List<Patient> patients) {
+        this.patients = patients;
+    }
+
+    public void addPatient(Patient patient) {
+        this.patients.add(patient);
     }
 
     @Override

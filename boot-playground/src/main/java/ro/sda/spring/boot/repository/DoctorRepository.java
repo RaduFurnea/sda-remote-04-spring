@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 import ro.sda.spring.boot.entity.Doctor;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface DoctorRepository extends JpaRepository<Doctor, Long> {
@@ -24,4 +25,8 @@ public interface DoctorRepository extends JpaRepository<Doctor, Long> {
     // value is a HQL query, so the query will run on Entity properties
     @Query(value = "SELECT count(d) from Doctor as d where d.lastName = :lastName", nativeQuery = false)
     Integer countDoctorsByLastName(@Param("lastName") String lastName);
+
+    // in case of fetch type LAZY, you can use left join fetch to get the desired relations
+    @Query(value = "SELECT d from Doctor as d left join fetch d.patients where d.id = :id")
+    Optional<Doctor> findByIdFull(@Param("id") Long id);
 }

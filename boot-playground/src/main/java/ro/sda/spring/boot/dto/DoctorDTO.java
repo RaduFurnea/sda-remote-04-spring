@@ -1,7 +1,10 @@
 package ro.sda.spring.boot.dto;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.Column;
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class DoctorDTO extends BaseDTO {
 
@@ -17,7 +20,9 @@ public class DoctorDTO extends BaseDTO {
 
     private String email;
 
-    public DoctorDTO(Long id, LocalDateTime createdTime, LocalDateTime lastModifiedTime, String firstName, String lastName, String street, Long streetNr, String postCode, String email) {
+    private List<PatientDTO> patients;
+
+    public DoctorDTO(Long id, LocalDateTime createdTime, LocalDateTime lastModifiedTime, String firstName, String lastName, String street, Long streetNr, String postCode, String email, List<PatientDTO> patients) {
         super(id, createdTime, lastModifiedTime);
         this.firstName = firstName;
         this.lastName = lastName;
@@ -25,6 +30,7 @@ public class DoctorDTO extends BaseDTO {
         this.streetNr = streetNr;
         this.postCode = postCode;
         this.email = email;
+        this.patients = patients;
     }
 
     public DoctorDTO() {
@@ -76,5 +82,17 @@ public class DoctorDTO extends BaseDTO {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public List<PatientDTO> getPatients() {
+        return patients;
+    }
+
+    public void setPatients(List<PatientDTO> patients) {
+        this.patients = patients;
+    }
+
+    public void addPatient(PatientDTO patientDTO) {
+        this.patients.add(patientDTO);
     }
 }

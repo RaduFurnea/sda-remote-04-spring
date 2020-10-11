@@ -3,6 +3,8 @@ package ro.sda.spring.boot.entity;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -31,6 +33,12 @@ public class Patient extends BaseEntity {
 
     @Column(nullable = false)
     private BigDecimal weight;
+
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private Doctor doctor;
+
+    @OneToMany(mappedBy = "treatment")
+    private List<PatientTreatment> patientTreatments = new ArrayList();
 
     public Patient(String firstName, String lastName, LocalDate dateOfBirth, String street, Long streetNo, String postalCode, Long height, BigDecimal weight) {
         this.firstName = firstName;
@@ -116,6 +124,14 @@ public class Patient extends BaseEntity {
 
     public void setWeight(BigDecimal weight) {
         this.weight = weight;
+    }
+
+    public Doctor getDoctor() {
+        return doctor;
+    }
+
+    public void setDoctor(Doctor doctor) {
+        this.doctor = doctor;
     }
 
     @Override

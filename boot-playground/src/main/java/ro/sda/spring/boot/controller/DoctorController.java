@@ -1,6 +1,7 @@
 package ro.sda.spring.boot.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ro.sda.spring.boot.dto.DoctorDTO;
@@ -21,9 +22,12 @@ public class DoctorController {
 
     private final DoctorService doctorService;
 
+    private final DoctorTransformer doctorTransformer;
+
     @Autowired
-    public DoctorController(DoctorService doctorService) {
+    public DoctorController(DoctorService doctorService, DoctorTransformer doctorTransformer) {
         this.doctorService = doctorService;
+        this.doctorTransformer = doctorTransformer;
     }
 
     @GetMapping(path = "/{id}")
@@ -31,7 +35,7 @@ public class DoctorController {
         // gets value from service
         Doctor doctor = doctorService.findDoctorById(id);
         // transform from entity to DTO (data transfer object)
-        DoctorDTO doctorDTO = DoctorTransformer.transformReversed(doctor);
+        DoctorDTO doctorDTO = doctorTransformer.transformReversed(doctor);
         // put doctorDTO into the response entity
         return ResponseEntity.ok(doctorDTO);
     }
@@ -45,11 +49,11 @@ public class DoctorController {
     @PostMapping
     public ResponseEntity<DoctorDTO> createDoctor(@RequestBody DoctorDTO doctorDTO) {
         // construct the required entity object
-        Doctor doctor = DoctorTransformer.transform(doctorDTO);
+        Doctor doctor = doctorTransformer.transform(doctorDTO);
         // assign saved entity to new object
         Doctor savedDoctor = doctorService.saveDoctor(doctor);
         // transform from entity to DTO (data transfer object)
-        DoctorDTO savedDoctorDTO = DoctorTransformer.transformReversed(savedDoctor);
+        DoctorDTO savedDoctorDTO = doctorTransformer.transformReversed(savedDoctor);
         // put doctorDTO into the response entity
         return ResponseEntity.ok(savedDoctorDTO);
     }
@@ -57,11 +61,11 @@ public class DoctorController {
     @PutMapping
     public ResponseEntity<DoctorDTO> updateDoctor(@RequestBody DoctorDTO doctorDTO) {
         // construct the required entity object
-        Doctor doctor = DoctorTransformer.transform(doctorDTO);
+        Doctor doctor = doctorTransformer.transform(doctorDTO);
         // assign saved entity to new object
         Doctor savedDoctor = doctorService.saveDoctor(doctor);
         // transform from entity to DTO (data transfer object)
-        DoctorDTO savedDoctorDTO = DoctorTransformer.transformReversed(savedDoctor);
+        DoctorDTO savedDoctorDTO = doctorTransformer.transformReversed(savedDoctor);
         // put doctorDTO into the response entity
         return ResponseEntity.ok(savedDoctorDTO);
     }
@@ -69,14 +73,14 @@ public class DoctorController {
     @GetMapping
     public ResponseEntity<List<DoctorDTO>> getByFirstName(@RequestParam(value = "first-name") String firstName) {
         List<Doctor> doctors = doctorService.findByFirstName(firstName);
-        List<DoctorDTO> doctorDTOS = doctors.stream().map(d -> DoctorTransformer.transformReversed(d)).collect(Collectors.toList());
+        List<DoctorDTO> doctorDTOS = doctors.stream().map(d -> doctorTransformer.transformReversed(d)).collect(Collectors.toList());
         return ResponseEntity.ok(doctorDTOS);
     }
 
     @GetMapping(path = "/pageable")
     public ResponseEntity<PageableDoctorResponseDTO> getDoctorsPageable(@RequestParam(value = "page") int page, @RequestParam(value = "size") int size) {
         List<Doctor> doctors = doctorService.findAllDoctorsPageable(page, size);
-        List<DoctorDTO> doctorDTOS = doctors.stream().map(DoctorTransformer::transformReversed).collect(Collectors.toList());
+        List<DoctorDTO> doctorDTOS = doctors.stream().map(doctorTransformer::transformReversed).collect(Collectors.toList());
 
         // create pageable response
         PageableDoctorResponseDTO responseDTO = new PageableDoctorResponseDTO();

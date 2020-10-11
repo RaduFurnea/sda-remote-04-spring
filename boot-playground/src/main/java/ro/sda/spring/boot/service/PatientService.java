@@ -5,8 +5,6 @@ import org.springframework.stereotype.Service;
 import ro.sda.spring.boot.entity.Patient;
 import ro.sda.spring.boot.repository.PatientRepository;
 
-import javax.annotation.PostConstruct;
-import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -21,7 +19,7 @@ public class PatientService {
         this.patientRepository = patientRepository;
     }
 
-    public Patient createPatient(Patient patient) {
+    public Patient savePatient(Patient patient) {
         return patientRepository.save(patient);
     }
 

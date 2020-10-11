@@ -84,12 +84,15 @@ public class DoctorService {
     }
 
     private void createDefaultDoctors() {
-        List<Doctor> doctors = new ArrayList<>();
-        doctors.add(new Doctor("Adrian", "Bobocel", "Str. Carpenului", 12l, "500412", "a.bobocel@gmail.com"));
-        doctors.add(new Doctor("Adrian", "Rotila", "Str. Socului", 45l, "500435", "a.rotila@gmail.com"));
-        doctors.add(new Doctor("Bogdan", "Gabor", "Str. Nucului", 5l, "500987", "bogdan.gabor@yahoo.com"));
-        doctors.add(new Doctor("Constantin", "Juncu", "Str. Ciresului", 59l, "500654", "c.juncu@yahoo.com"));
-        doctors.add(new Doctor("George", "Niculae", "Str. Calea Bucuresti", 255l, "500487", "g.nc12@gmail.com"));
-        doctorRepository.saveAll(doctors);
+        // create doctors only if they don't exist
+        if (this.countDoctors().equals(0)) {
+            List<Doctor> doctors = new ArrayList<>();
+            doctors.add(new Doctor("Adrian", "Bobocel", "Str. Carpenului", 12l, "500412", "a.bobocel@gmail.com"));
+            doctors.add(new Doctor("Adrian", "Rotila", "Str. Socului", 45l, "500435", "a.rotila@gmail.com"));
+            doctors.add(new Doctor("Bogdan", "Gabor", "Str. Nucului", 5l, "500987", "bogdan.gabor@yahoo.com"));
+            doctors.add(new Doctor("Constantin", "Juncu", "Str. Ciresului", 59l, "500654", "c.juncu@yahoo.com"));
+            doctors.add(new Doctor("George", "Niculae", "Str. Calea Bucuresti", 255l, "500487", "g.nc12@gmail.com"));
+            doctorRepository.saveAll(doctors);
+        }
     }
 }
