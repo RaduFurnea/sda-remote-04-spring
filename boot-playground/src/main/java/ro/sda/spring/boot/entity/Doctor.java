@@ -1,6 +1,9 @@
 package ro.sda.spring.boot.entity;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -9,21 +12,25 @@ import java.util.Objects;
 public class Doctor extends BaseEntity {
 
     @Column(nullable = false, length = 32)
+    @NotBlank(message = "First name cannot be blank")
     private String firstName;
 
     @Column(nullable = false, length = 32)
+    @NotBlank(message = "Last name cannot be blank")
     private String lastName;
 
-    @Column(nullable = false, length = 128)
+    @Column(nullable = true, length = 128)
     private String street;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private Long streetNr;
 
-    @Column(nullable = false, length = 32)
+    @Column(nullable = true, length = 32)
     private String postCode;
 
-    @Column(nullable = true, length = 64)
+    @Column(nullable = false, length = 64)
+    @NotBlank(message = "Email cannot be blank")
+    @Email(message = "Email not valid")
     private String email;
 
     @OneToMany(mappedBy = "doctor", cascade = CascadeType.ALL, fetch = FetchType.EAGER)

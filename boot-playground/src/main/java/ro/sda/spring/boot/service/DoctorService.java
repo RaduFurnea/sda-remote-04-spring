@@ -78,6 +78,10 @@ public class DoctorService {
         doctorRepository.deleteById(id);
     }
 
+    public List<Doctor> findAllDoctors() {
+        return doctorRepository.findAll();
+    }
+
     @PostConstruct
     public void init() {
         this.createDefaultDoctors();
@@ -85,7 +89,7 @@ public class DoctorService {
 
     private void createDefaultDoctors() {
         // create doctors only if they don't exist
-        if (this.countDoctors().equals(0)) {
+        if (this.countDoctors() == 0) {
             List<Doctor> doctors = new ArrayList<>();
             doctors.add(new Doctor("Adrian", "Bobocel", "Str. Carpenului", 12l, "500412", "a.bobocel@gmail.com"));
             doctors.add(new Doctor("Adrian", "Rotila", "Str. Socului", 45l, "500435", "a.rotila@gmail.com"));
