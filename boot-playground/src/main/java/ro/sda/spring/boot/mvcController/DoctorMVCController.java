@@ -65,5 +65,4 @@ public class DoctorMVCController {
         return "index";
     }
 
-
 }

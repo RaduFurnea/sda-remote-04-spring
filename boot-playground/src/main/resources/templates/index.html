@@ -2,12 +2,18 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Home</title>
+    <link rel="stylesheet" type="text/css" media="all" th:href="@{/css/appStyles.css}" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css">
 </head>
 <body>
 <h2 class="my-5">Doctors</h2>
 <a href="/signup">Add doctor</a>
-<table class="table table-striped table-responsive-md">
+<div th:if="${doctors.size() == 0}">
+    <h2>No doctors</h2>
+</div>
+<table th:if="${doctors.size() > 0}">
     <thead>
     <tr>
         <th>Name</th>
