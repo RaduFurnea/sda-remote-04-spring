@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Home page</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/myStyles.css}"/>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css">
+</head>
+<body>
+<h2>Doctors</h2>
+
+<a class="btn btn-success" style="margin: 15px;" th:href="@{/signup}">Add doctor</a>
+
+<div th:if="${doctors.size() == 0}">
+    <h2>No doctors in application.</h2>
+</div>
+<table class="table table-hover table-responsive" style="margin-left: 15px;" th:if="${doctors.size() > 0}">
+    <thead class="my-table-header">
+        <th>First name</th>
+        <th>Last name</th>
+        <th>Email</th>
+        <th>Edit</th>
+        <th>Delete</th>
+    </thead>
+    <tbody>
+        <tr th:each="doctor : ${doctors}">
+            <td th:text="${doctor.firstName}"></td>
+            <td th:text="${doctor.lastName}"></td>
+            <td th:text="${doctor.email}"></td>
+            <td>
+                <a class="btn btn-primary" th:href="@{/doctor/edit/{id}(id = ${doctor.id})}">
+                    <i class="fas fa-user-edit"></i>
+                </a>
+            </td>
+            <td>
+                <a class="btn btn-danger" th:href="@{/doctor/delete/{id}(id = ${doctor.id})}">
+                    <i class="fas fa-trash-alt"></i>
+                </a>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+</body>
+</html>

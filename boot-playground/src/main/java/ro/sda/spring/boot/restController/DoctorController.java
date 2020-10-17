@@ -1,7 +1,6 @@
-package ro.sda.spring.boot.controller;
+package ro.sda.spring.boot.restController;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ro.sda.spring.boot.dto.DoctorDTO;
@@ -10,7 +9,6 @@ import ro.sda.spring.boot.entity.Doctor;
 import ro.sda.spring.boot.service.DoctorService;
 import ro.sda.spring.boot.transformer.DoctorTransformer;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;

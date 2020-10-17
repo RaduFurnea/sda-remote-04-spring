@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Add doctor</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/myStyles.css}"/>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css">
+</head>
+<body>
+<div>
+    <a class="btn btn-primary" href="/">Go home</a>
+</div>
+<form th:action="@{/doctor/add}" th:object="${doctor}" method="post">
+    <div>
+        <div>
+            <label for="firstName">First name</label>
+            <input type="text" th:field="${doctor.firstName}" id="firstName" placeholder="First name">
+            <span th:if="${#fields.hasErrors('firstName')}" th:errors="${doctor.firstName}"></span>
+        </div>
+        <div>
+            <label for="lastName">Last name</label>
+            <input type="text" th:field="${doctor.lastName}" id="lastName" placeholder="Last name">
+            <span th:if="${#fields.hasErrors('lastName')}" th:errors="${doctor.lastName}"></span>
+        </div>
+        <div>
+            <label for="email">Email</label>
+            <input type="text" th:field="${doctor.email}" id="email" placeholder="Email">
+            <span th:if="${#fields.hasErrors('email')}" th:errors="${doctor.email}"></span>
+        </div>
+    </div>
+    <div>
+        <input type="submit" value="Add doctor">
+    </div>
+</form>
+</body>
+</html>

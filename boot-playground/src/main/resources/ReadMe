@@ -1,1 +1,36 @@
 This file has the purpose of explaining the structure and steps needed to add new functionality.
+
+Package structure:
+Controller - This layer contains all @RestController classes with methods that act as endpoints.
+           - This layer should contain dependencies to Service beans
+
+Service - This layer (@Service) should contain methods that bind the controller layer to the repository layer.
+        - If any specific business logic is implemented, it should be done here.
+        - This layer should contain dependencies to Repository beans and if needed, to other Service beans.
+
+Repository - This layer (@Repository) contains interfaces that extend JpaRepository and is responsible only for data access from DB.
+           - This layer should have no dependencies.
+
+Entity - This layer (@Entity) should contain only entities that are persisted to the database, and classes strongly related to them, for example BaseEntity.
+       - This layer should have no dependencies.
+
+DTO - This layer should contain objects that are transported to the client via http.
+    - This layer is optional, because nothing restricts us from transporting the @Entities
+
+Transformer - This layer is responsible with transforming Entities in DTOs and DTOs in Entities.
+            - If no DTOs are used in your case, this layer should not exist.
+
+Exception - This package is responsible with containing all exception classes and handlers.
+
+
+Usual flow when adding new functionality:
+
+1. Decide what feature you want your application to have. Let's assume you want to expose a new endpoint.
+
+2. Decide what the endpoints role is. What path, HTTP method to use, what request body, query params etc, and what response it should return.
+
+3. Write the endpoint in the respective @RestController class.
+
+4. The response of your endpoint should be processed by a method in a @Service, so write that.
+
+5. If you need @Repository methods that are not already there, write them and use them in your @Service.
