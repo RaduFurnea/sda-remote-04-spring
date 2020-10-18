@@ -9,6 +9,7 @@ import ro.sda.spring.boot.exception.NotFoundExeption;
 import ro.sda.spring.boot.repository.DoctorRepository;
 
 import javax.annotation.PostConstruct;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -89,12 +90,14 @@ public class DoctorService {
 
     private void createDefaultDoctors() {
         // create doctors only if they don't exist
-        List<Doctor> doctors = new ArrayList<>();
-        doctors.add(new Doctor("Adrian", "Bobocel", "Str. Carpenului", 12l, "500412", "a.bobocel@gmail.com"));
-        doctors.add(new Doctor("Adrian", "Rotila", "Str. Socului", 45l, "500435", "a.rotila@gmail.com"));
-        doctors.add(new Doctor("Bogdan", "Gabor", "Str. Nucului", 5l, "500987", "bogdan.gabor@yahoo.com"));
-        doctors.add(new Doctor("Constantin", "Juncu", "Str. Ciresului", 59l, "500654", "c.juncu@yahoo.com"));
-        doctors.add(new Doctor("George", "Niculae", "Str. Calea Bucuresti", 255l, "500487", "g.nc12@gmail.com"));
-        doctorRepository.saveAll(doctors);
+        if(this.doctorRepository.count() == 0) {
+            List<Doctor> doctors = new ArrayList<>();
+            doctors.add(new Doctor("Adrian", "Bobocel", "Str. Carpenului", 12l, "500412", "a.bobocel@gmail.com", LocalDate.of(1990,4,20)));
+            doctors.add(new Doctor("Adrian", "Rotila", "Str. Socului", 45l, "500435", "a.rotila@gmail.com", LocalDate.of(1990,4,20)));
+            doctors.add(new Doctor("Bogdan", "Gabor", "Str. Nucului", 5l, "500987", "bogdan.gabor@yahoo.com", LocalDate.of(1990,4,20)));
+            doctors.add(new Doctor("Constantin", "Juncu", "Str. Ciresului", 59l, "500654", "c.juncu@yahoo.com", LocalDate.of(1990,4,20)));
+            doctors.add(new Doctor("George", "Niculae", "Str. Calea Bucuresti", 255l, "500487", "g.nc12@gmail.com", LocalDate.of(1990,4,20)));
+            doctorRepository.saveAll(doctors);
+        }
     }
 }

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 <head>
     <meta charset="UTF-8">
     <title>Home page</title>
@@ -10,7 +11,9 @@
 <body>
 <h2>Doctors</h2>
 
-<a class="btn btn-success" style="margin: 15px;" th:href="@{/signup}">Add doctor</a>
+<a href="/logout">Log out</a>
+
+<a sec:authorize="hasRole('ROLE_ADMIN')" class="btn btn-success" style="margin: 15px;" th:href="@{/signup}">Add doctor</a>
 
 <div th:if="${doctors.size() == 0}">
     <h2>No doctors in application.</h2>
@@ -20,20 +23,22 @@
         <th>First name</th>
         <th>Last name</th>
         <th>Email</th>
-        <th>Edit</th>
-        <th>Delete</th>
+        <th>Date of birth</th>
+        <th sec:authorize="hasRole('ROLE_ADMIN')">Edit</th>
+        <th sec:authorize="hasRole('ROLE_ADMIN')">Delete</th>
     </thead>
     <tbody>
         <tr th:each="doctor : ${doctors}">
             <td th:text="${doctor.firstName}"></td>
             <td th:text="${doctor.lastName}"></td>
             <td th:text="${doctor.email}"></td>
-            <td>
+            <td th:text="${#temporals.format(doctor.dateOfBirth, 'dd-MMM-yyyy')}"></td>
+            <td sec:authorize="hasRole('ROLE_ADMIN')">
                 <a class="btn btn-primary" th:href="@{/doctor/edit/{id}(id = ${doctor.id})}">
                     <i class="fas fa-user-edit"></i>
                 </a>
             </td>
-            <td>
+            <td sec:authorize="hasRole('ROLE_ADMIN')">
                 <a class="btn btn-danger" th:href="@{/doctor/delete/{id}(id = ${doctor.id})}">
                     <i class="fas fa-trash-alt"></i>
                 </a>

@@ -1,9 +1,12 @@
 package ro.sda.spring.boot.entity;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Pattern;
+import javax.validation.constraints.NotNull;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -33,16 +36,22 @@ public class Doctor extends BaseEntity {
     @Email(message = "Email not valid.")
     private String email;
 
+    @Column(nullable = false)
+    @NotNull(message = "Date of birth cannot be blank.")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate dateOfBirth;
+
     @OneToMany(mappedBy = "doctor", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Patient> patients = new ArrayList();
 
-    public Doctor(String firstName, String lastName, String street, Long streetNr, String postCode, String email) {
+    public Doctor(String firstName, String lastName, String street, Long streetNr, String postCode, String email, LocalDate dateOfBirth) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.street = street;
         this.streetNr = streetNr;
         this.postCode = postCode;
         this.email = email;
+        this.dateOfBirth = dateOfBirth;
     }
 
     public Doctor() {
@@ -106,6 +115,14 @@ public class Doctor extends BaseEntity {
 
     public void addPatient(Patient patient) {
         this.patients.add(patient);
+    }
+
+    public LocalDate getDateOfBirth() {
+        return dateOfBirth;
+    }
+
+    public void setDateOfBirth(LocalDate dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
     }
 
     @Override
